@@ -1,7 +1,7 @@
 #include "UR3TcpServer.hpp"
 
-UR3TcpServer::UR3TcpServer(std::string& addrRobot, std::string& addrControl)
-    : m_addrRobot(addrRobot), m_addrControl(addrControl),
+UR3TcpServer::UR3TcpServer(std::string& addrRobot, std::string& addrControl, bool useFixedControl)
+    : m_addrRobot(addrRobot), m_addrControl(addrControl), m_useFixedControl(useFixedControl),
       m_fdServer(INVALID_SOCKET), m_fdRobot(INVALID_SOCKET),
       m_fdControl(INVALID_SOCKET), m_fdMax(INVALID_SOCKET)
 {
@@ -134,7 +134,7 @@ HandleRes_e UR3TcpServer::ServerAccept()
     if (INVALID_SOCKET == m_fdRobot && addr == m_addrRobot) {
         m_fdRobot = fdClient;
     }
-    else if (INVALID_SOCKET == m_fdControl && addr == m_addrControl) {
+    else if (INVALID_SOCKET == m_fdControl && (!m_useFixedControl || addr == m_addrControl)) {
         m_fdControl = fdClient;
     }
     else {

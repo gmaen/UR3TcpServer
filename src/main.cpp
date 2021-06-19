@@ -6,24 +6,30 @@ int main()
     LogInfo("main start");
 
     Config config;
-    if (ConfigRes_e::SUCCESS != config.LoadFromFile()) {
+    if (ConfigRes_e::SUCCESS != config.LoadFromFile())
+    {
         LogError("load config error!");
         return 1;
     }
     std::string addrRobot = config.GetRobotAddr();
+    bool useFixedControl = config.GetUseFixedControl();
     std::string addrControl = config.GetControlAddr();
-    int port = config.GetServerPort();
+    std::string addrServer = config.GetServerAddr();
+    int portServer = config.GetServerPort();
 
-    UR3TcpServer server(addrRobot, addrControl);
-    if (HandleRes_e::HR_SUCCESS != server.ServerInit()) {
+    UR3TcpServer server(addrRobot, addrControl, useFixedControl);
+    if (HandleRes_e::HR_SUCCESS != server.ServerInit())
+    {
         LogError("init server error!");
         return 1;
     }
-    if (HandleRes_e::HR_SUCCESS != server.ServerBind(port)) {
+    if (HandleRes_e::HR_SUCCESS != server.ServerBind(portServer, addrServer.c_str()))
+    {
         LogError("bind error!");
         return 1;
     }
-    if (HandleRes_e::HR_SUCCESS != server.ServerListen()) {
+    if (HandleRes_e::HR_SUCCESS != server.ServerListen())
+    {
         LogError("listen error!");
         return 1;
     }
@@ -32,8 +38,10 @@ int main()
     timeval ts;
     ts.tv_sec = 1;
 
-    while (true) {
-        if (HandleRes_e::HR_SUCCESS != server.ServerOnRun(fdReadSet, ts)) {
+    while (true)
+    {
+        if (HandleRes_e::HR_SUCCESS != server.ServerOnRun(fdReadSet, ts))
+        {
             LogError("running error!");
             return 1;
         }

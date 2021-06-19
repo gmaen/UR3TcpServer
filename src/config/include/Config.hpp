@@ -9,7 +9,8 @@
 
 using json = nlohmann::json;
 
-typedef enum {
+typedef enum
+{
     SUCCESS,
     FAILURE
 } ConfigRes_e;
@@ -23,11 +24,16 @@ public:
     ConfigRes_e LoadFromFile(std::string fileName = DEFAULT_CONFIG);
 
     std::string GetRobotAddr() const;
+    bool GetUseFixedControl() const;
     std::string GetControlAddr() const;
+    std::string GetServerAddr() const;
     int GetServerPort() const;
+
 private:
     std::string m_addrRobot;
+    bool m_useFixedControl;
     std::string m_addrControl;
+    std::string m_addrServer;
     int m_portServer;
 };
 

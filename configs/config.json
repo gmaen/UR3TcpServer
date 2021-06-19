@@ -1,9 +1,11 @@
 {
-    "address": {
-        "robot": "192.168.*.*",
-        "control": "192.168.*.*"
+    "client": {
+        "robot": "192.168.1.11",
+        "usefixedcontrol": true,
+        "control": "192.168.1.12"
     },
     "server": {
+        "address": "192.168.1.10",
         "port": 12345
     }
 }
